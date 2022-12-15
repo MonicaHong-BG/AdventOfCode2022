@@ -11,6 +11,10 @@ console.log(series)
 // consider signal strength ==> cycle # * V during 20th cycle and every 40 cycles after that
 // find sum of these signal strength
 
+// p2
+// X ==> horizontal middle position of sprite
+// 1 cycle == 1 pixel draw
+
 let cycle = 1
 let X = 1
 let sum = 0
