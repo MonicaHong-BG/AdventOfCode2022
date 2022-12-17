@@ -1,59 +1,62 @@
 var fs = require("fs");
-var text = fs.readFileSync("./d10/d10-inputs2.txt", "utf-8");
-var series = text.split("\r\n")
-
-console.log(series)
+var text = fs.readFileSync("./d10/d10-inputs.txt", "utf-8");
+var inputs = text.split("\r\n")
 
 // single register X starting at 1
 // addx V 2 cycles --> aftere 2nd cycle, X register is += V
 // noop 1 cycle
 
-// consider signal strength ==> cycle # * V during 20th cycle and every 40 cycles after that
-// find sum of these signal strength
-
 // p2
-// X ==> horizontal middle position of sprite
-// 1 cycle == 1 pixel draw
+// sprite == 3 pixels wide
+// X ==> middle pixel of sprite
+// CRT draws 1 pixel/cycle
+// Is sprite visible when CRT draws?
+//  --> visible ==> pos == X + or - 1
 
 let cycle = 1
 let X = 1
-let sum = 0
-for (let i = 0; i < series.length; i++) {
+let pos = 0
+let screen = []
+let draw = ""
+for (let input of inputs) {
 // for (let i = 0; i < 40; i++) {
-    cycle++
-    if (isInteresting(cycle)) {
-        sum += cycle * X
-        console.log("sum is now: " + sum)
-    }
-    if (series[i] == "noop") {
-        continue
-    }
-    let value = parseInt(series[i].match(/addx (\-*\d*)/)[1])
-    console.log(value)
-    if (value) {
-        cycle++
-        X += value
-        console.log("X is now: " + X)
-        if (isInteresting(cycle)) {
-            sum += cycle * X
-            console.log("sum is now: " + sum)
+    run()
+    
+    if (input != "noop") {
+        run()
+
+        let value = parseInt(input.match(/addx (\-*\d*)/)[1])
+        if (value) {
+            X += value
+            // console.log(`adding to X: ${value} - X is now: ${X}\n`)
         }
     }
-    console.log(X)
+}
+console.log(screen)
+
+function drawPixel() {
+    // console.log("this cycle: " + cycle)
+    // console.log("this pos: " + pos)
+    // console.log("compare with X: " + X)
+
+    if (Math.abs(pos - X) <= 1) {
+        draw += "#"
+    } else {
+        draw += " "
+    }
+    // console.log(draw)
 }
 
-console.log("sum is " + sum)
+function run() {
+    drawPixel()
 
-function isInteresting(cycle) {
-    if (cycle == 20 ||
-        cycle == 60 ||
-        cycle == 100 ||
-        cycle == 140 ||
-        cycle == 180 ||
-        cycle == 220) {
-        
-        console.log("very interesting..." + cycle)
-        return true
+    if (cycle % 40 == 0) {
+        screen.push(draw)
+        pos = 0
+        draw = ""
+        // console.log("very interesting..." + cycle)
+    } else {
+        pos++
     }
-    return false
+    cycle++
 }
