@@ -6,9 +6,7 @@ const maxFileSize = 100000
 let directories = {}
 let dirTotals = {}
 let current = []
-for(let i = 0; i < outputs.length; i++) {
-// for(let i = 0; i < 200; i++) {
-    let cmd = outputs[i]
+for(let cmd of outputs) {
     let cdTop = cmd.match(/^\$ cd (\/+)/)
     let cdName = cmd.match(/^\$ cd (\w+)/)
     let back = cmd.match(/^\$ cd (\.\.)/)
