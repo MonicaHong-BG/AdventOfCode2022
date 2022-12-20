@@ -1,5 +1,5 @@
 var fs = require("fs");
-var text = fs.readFileSync("./d11/d11-inputs2.txt", "utf-8");
+var text = fs.readFileSync("./d11/d11-inputs.txt", "utf-8");
 var series = text.toLowerCase().split("\r\n");
 
 // 2 most active monkeys after 20 rounds
@@ -77,6 +77,8 @@ function simulateRound(monkeys) {
     // calculate new worrylevel
     while (monkey.startItems.length > 0) {
       let old = monkey.startItems.shift()
+      //relief
+      old = Math.floor(old / 3)
       let newWorry = Number(eval(monkey.operation))
       // throw
       if (eval(monkey.test) == 0) {
