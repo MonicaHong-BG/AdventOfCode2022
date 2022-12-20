@@ -19,7 +19,14 @@ class Monkey {
 }
 
 let monkeys = buildInstructions()
-simulateRound(monkeys);
+for (let i = 0; i < 20; i++) {
+  let results = simulateRound(monkeys)
+  for (let monkey of results) {
+    console.log(monkey)
+  }
+  console.log(`***** end round ${i+1} *****\n`)
+}
+console.log(topTwo(monkeys))
 
 function buildInstructions() {
   let monkeys = [];
@@ -44,7 +51,7 @@ function buildInstructions() {
       if (series[i + 3].trim().startsWith("test")) {
         monkey.test = series[i + 3]
           .split("test: ")[1]
-          .replace("divisible by", "/");
+          .replace("divisible by", "newWorry %");
       }
       if (series[i + 4].trim().startsWith("if true")) {
         monkey.true = parseInt(series[i + 4].match(/(\d)$/)[1]);
@@ -66,16 +73,32 @@ function simulateRound(monkeys) {
     // add inspect
     monkey.inspect += monkey.startItems.length
     // calculate new worrylevel
-    // for (let old of monkey.startItems) {
     while (monkey.startItems.length > 0) {
       let old = monkey.startItems.shift()
       let newWorry = eval(monkey.operation)
-      console.log(newWorry)
-
       // throw
-      
+      if (eval(monkey.test) == 0) {
+        monkeys[monkey.true].startItems.push(newWorry)
+      } else {
+        monkeys[monkey.false].startItems.push(newWorry)
+      }
     }
   }
+  return monkeys
 }
 
-//eval operation "old" + _
+function topTwo(monkeys) {
+  let most = 0
+  let next = 0
+  for (let monkey of monkeys) {
+    console.log(monkey.inspect)
+    if ( most < monkey.inspect) {
+      next = most
+      most = monkey.inspect
+    }
+    else if (next < monkey.inspect) {
+      next = monkey.inspect
+    }
+  }
+  return most * next
+}
