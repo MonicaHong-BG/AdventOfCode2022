@@ -19,6 +19,7 @@ class Monkey {
 }
 
 let monkeys = buildInstructions()
+
 for (let i = 0; i < 20; i++) {
   let results = simulateRound(monkeys)
   for (let monkey of results) {
@@ -26,6 +27,7 @@ for (let i = 0; i < 20; i++) {
   }
   console.log(`***** end round ${i+1} *****\n`)
 }
+
 console.log(topTwo(monkeys))
 
 function buildInstructions() {
@@ -34,12 +36,12 @@ function buildInstructions() {
   for (let i = 0; i < series.length; i += 7) {
     if (series[i].startsWith("monkey")) {
       let monkey = new Monkey();
-      monkey.id = parseInt(series[i].match(/monkey (\d):$/)[1]);
+      monkey.id = Number(series[i].match(/monkey (\d):$/)[1]);
       if (series[i + 1].trim().startsWith("starting items")) {
         // splits as str, need to change to int during op
         let temp = series[i + 1].split("starting items: ")[1].split(",");
         for (let num of temp) {
-          monkey.startItems.push(parseInt(num.trim()));
+          monkey.startItems.push(Number(num.trim()));
         }
       }
       if (series[i + 2].trim().startsWith("operation")) {
@@ -54,10 +56,10 @@ function buildInstructions() {
           .replace("divisible by", "newWorry %");
       }
       if (series[i + 4].trim().startsWith("if true")) {
-        monkey.true = parseInt(series[i + 4].match(/(\d)$/)[1]);
+        monkey.true = Number(series[i + 4].match(/(\d)$/)[1]);
       }
       if (series[i + 5].trim().startsWith("if false")) {
-        monkey.false = parseInt(series[i + 5].match(/(\d)$/)[1]);
+        monkey.false = Number(series[i + 5].match(/(\d)$/)[1]);
         monkey.done = true;
       }
       if (monkey.done) {
@@ -75,7 +77,7 @@ function simulateRound(monkeys) {
     // calculate new worrylevel
     while (monkey.startItems.length > 0) {
       let old = monkey.startItems.shift()
-      let newWorry = eval(monkey.operation)
+      let newWorry = Number(eval(monkey.operation))
       // throw
       if (eval(monkey.test) == 0) {
         monkeys[monkey.true].startItems.push(newWorry)
