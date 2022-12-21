@@ -1,5 +1,5 @@
 var fs = require("fs");
-var text = fs.readFileSync("./d11/d11-inputs.txt", "utf-8");
+var text = fs.readFileSync("./d11/d11-inputs2.txt", "utf-8");
 var series = text.toLowerCase().split("\r\n");
 
 // 2 most active monkeys after 20 rounds
@@ -20,12 +20,12 @@ class Monkey {
 
 let monkeys = buildInstructions()
 
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 10000; i++) {
   let results = simulateRound(monkeys)
-  for (let monkey of results) {
-    console.log(monkey)
-  }
-  console.log(`***** end round ${i+1} *****\n`)
+  // for (let monkey of results) {
+  //   console.log(monkey)
+  // }
+  // console.log(`***** end round ${i+1} *****\n`)
 }
 
 console.log(topTwo(monkeys))
@@ -79,7 +79,7 @@ function simulateRound(monkeys) {
       let old = monkey.startItems.shift()
       //relief
       let newWorry = Number(eval(monkey.operation))
-      newWorry = Math.floor(newWorry / 3)
+      // newWorry = Math.floor(newWorry / 3)
       // throw
       if (eval(monkey.test) == 0) {
         monkeys[monkey.true].startItems.push(newWorry)
