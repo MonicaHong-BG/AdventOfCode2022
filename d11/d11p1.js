@@ -78,8 +78,8 @@ function simulateRound(monkeys) {
     while (monkey.startItems.length > 0) {
       let old = monkey.startItems.shift()
       //relief
-      old = Math.floor(old / 3)
       let newWorry = Number(eval(monkey.operation))
+      newWorry = Math.floor(newWorry / 3)
       // throw
       if (eval(monkey.test) == 0) {
         monkeys[monkey.true].startItems.push(newWorry)
