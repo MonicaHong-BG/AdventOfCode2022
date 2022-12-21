@@ -14,6 +14,16 @@ few steps as possible to 'E'
 //how to organize?
 // [X] no need to parse instructions
 // [X] FIND S position
+// [x] establish dominance
+// [] 
+
+const abc = "SabcdefghijklmnopqrstuvwxyzE"
+const hierarchy = {}
+for (let i = 0; i < abc.length; i++) {
+    hierarchy[abc[i]] = i
+}
+console.log(hierarchy)
+
 let S = findS()
 console.log(S)
 
