@@ -14,21 +14,22 @@ class Monkey {
     this.true = null;
     this.false = null;
     this.inspect = 0;
+    this.prime = null;
     this.done = false;
   }
 }
 
-let monkeys = buildInstructions()
+let monkeys = buildInstructions();
 
 for (let i = 0; i < 10000; i++) {
-  let results = simulateRound(monkeys)
+  let results = simulateRound(monkeys, i);
   // for (let monkey of results) {
   //   console.log(monkey)
   // }
   // console.log(`***** end round ${i+1} *****\n`)
 }
 
-console.log(topTwo(monkeys))
+console.log(topTwo(monkeys));
 
 function buildInstructions() {
   let monkeys = [];
@@ -54,6 +55,7 @@ function buildInstructions() {
         monkey.test = series[i + 3]
           .split("test: ")[1]
           .replace("divisible by", "newWorry %");
+        monkey.prime = monkey.test.match(/\d{1,2}$/);
       }
       if (series[i + 4].trim().startsWith("if true")) {
         monkey.true = Number(series[i + 4].match(/(\d)$/)[1]);
@@ -67,42 +69,43 @@ function buildInstructions() {
       }
     }
   }
-  return monkeys
+  return monkeys;
 }
 
-function simulateRound(monkeys) {
+function simulateRound(monkeys, round) {
+  let primes = monkeys.map((monkey) => monkey.prime).reduce((a, b) => a * b, 1);
   for (let monkey of monkeys) {
     // add inspect
-    monkey.inspect += monkey.startItems.length
+    monkey.inspect += monkey.startItems.length;
     // calculate new worrylevel
     while (monkey.startItems.length > 0) {
-      let old = monkey.startItems.shift()
+      let old = monkey.startItems.shift();
       //relief
-      let newWorry = Number(eval(monkey.operation))
+      let newWorry = Number(eval(monkey.operation));
       // newWorry = Math.floor(newWorry / 3)
+      newWorry = newWorry % primes;
       // throw
       if (eval(monkey.test) == 0) {
-        monkeys[monkey.true].startItems.push(newWorry)
+        monkeys[monkey.true].startItems.push(newWorry);
       } else {
-        monkeys[monkey.false].startItems.push(newWorry)
+        monkeys[monkey.false].startItems.push(newWorry);
       }
     }
   }
-  return monkeys
+  return monkeys;
 }
 
 function topTwo(monkeys) {
-  let most = 0
-  let next = 0
+  let most = 0;
+  let next = 0;
   for (let monkey of monkeys) {
-    console.log(monkey.inspect)
-    if ( most < monkey.inspect) {
-      next = most
-      most = monkey.inspect
-    }
-    else if (next < monkey.inspect) {
-      next = monkey.inspect
+    console.log(monkey.inspect);
+    if (most < monkey.inspect) {
+      next = most;
+      most = monkey.inspect;
+    } else if (next < monkey.inspect) {
+      next = monkey.inspect;
     }
   }
-  return most * next
+  return most * next;
 }
