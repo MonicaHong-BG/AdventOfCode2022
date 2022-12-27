@@ -17,7 +17,7 @@ Find the sum of the numbers in 1000th, 2000th, and 3000th place after 0
 // [] insertAt
 
 // let working = numbers;
-let numbers = [13, -2, 4, 3, -6, 10, 7, -4, -3]; // 9 length
+let numbers = [13, -10, 4, 3, -6, 10, 7, -4, -3]; // 9 length
 for (let i = 0; i < numbers.length; i++) {
   // for (let i = 0; i < 5; i++) {
   if (numbers[i] < 0) {
@@ -31,20 +31,19 @@ function movePositive(i) {
   let pos = i;
   // will it need to wrap around?
   if (i + numbers[i] > numbers.length - 1) {
-    pos = i + (numbers[i] % numbers.length);
+    console.log("boop")
+    pos = (i + numbers[i]) % numbers.length;
   } else {
     pos += numbers[i];
   }
   console.log(pos);
-  // find out where in numbers.length the number will land
 }
 
 function moveNegative(i) {
-  // 0 ..1..2....3..........9... length-1
   let pos = i;
   if (i - Math.abs(numbers[i]) < 0) {
     console.log("beep");
-    pos = i + (numbers[i] % numbers.length) + numbers.length;
+    pos = (i + numbers[i] + numbers.length) % numbers.length;
   } else {
     pos += numbers[i];
   }
