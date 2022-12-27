@@ -1,8 +1,7 @@
 var fs = require("fs");
 var text = fs.readFileSync("./d20/d20-inputs2.txt", "utf-8");
-const numbers = text.split("\r\n").map(Number);
+// const numbers = text.split("\r\n").map(Number);
 
-console.log(numbers[4999]);
 // Grove Positioning System
 /*
 In a circular list, move each number equal to its value
@@ -17,8 +16,10 @@ Find the sum of the numbers in 1000th, 2000th, and 3000th place after 0
 // [] removeAt
 // [] insertAt
 
-let working = numbers;
+// let working = numbers;
+let numbers = [13, -2, 4, 3, -6, 10, 7, -4, -3]; // 9 length
 for (let i = 0; i < numbers.length; i++) {
+  // for (let i = 0; i < 5; i++) {
   if (numbers[i] < 0) {
     moveNegative(i);
   } else if (numbers[i] > 0) {
@@ -31,17 +32,23 @@ function movePositive(i) {
   // will it need to wrap around?
   if (i + numbers[i] > numbers.length - 1) {
     pos = i + (numbers[i] % numbers.length);
+  } else {
+    pos += numbers[i];
   }
   console.log(pos);
   // find out where in numbers.length the number will land
 }
 
 function moveNegative(i) {
+  // 0 ..1..2....3..........9... length-1
   let pos = i;
-  if (numbers.length - 1 + numbers[i] < 0) {
-    pos = (i - (numbers[i] % numbers.length)) * -1;
+  if (i - Math.abs(numbers[i]) < 0) {
+    console.log("beep");
+    pos = i + (numbers[i] % numbers.length) + numbers.length;
+  } else {
+    pos += numbers[i];
   }
-  console.log(`- ${pos}`);
+  console.log(pos);
 }
 
 function findElement(num, i) {
